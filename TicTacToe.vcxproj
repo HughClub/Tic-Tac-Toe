@@ -141,12 +141,19 @@
   <ItemGroup>
     <ClCompile Include="ConsoleTicTacToe.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="T3Component.cpp" />
     <ClCompile Include="TicTacToe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleTicTacToe.h" />
+    <ClInclude Include="T3module.h" />
     <ClInclude Include="TicTacToe.h" />
     <ClInclude Include="Tools.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\BoardBg.png" />
+    <Image Include="res\O.png" />
+    <Image Include="res\X.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

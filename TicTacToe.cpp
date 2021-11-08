@@ -54,6 +54,16 @@ int TicTacToe::eval(vec& x, vec& o) {
   }
   return 0;
 }
+TicTacToe::Winner TicTacToe::eval() {
+  switch (eval(X, O)) {
+    case WIN:
+      return winner = Winner::X;
+    case -WIN:
+      return winner = Winner::O;
+    default:
+      return winner = Winner::Draw;
+  }
+}
 
 int TicTacToe::minmax(vec x, vec o, int depth, bool maximize) {
   int score = eval(x, o);
@@ -103,62 +113,18 @@ int TicTacToe::findBest(bool maximize) {
 /**
  * @brief show current board
  */
-void TicTacToe::board() {
-  if (ConsoleMode) {
-      for (int i = 0; i < 3; ++i) {
-        puts("----------");
-        for (int j = 0; j < 3; ++j) {
-          putchar('|');
-          putchar(Board[i * 3 + j]);
-          putchar(' ');
-        }
-        puts("|");
-      }
-      puts("----------");
-  } else {
-      // EasyX Way
-  }
-}
+const int* TicTacToe::board() { return Board; }
 
-TicTacToe::Winner TicTacToe::play() {
-  clear();
-  int pos;
-  do {
-    board();
-    // get self input
-    pos = getSelfNext();
-
-    Board[pos - 1] = 'X';
-    X.push_back(MAGIC_SQUARE[pos - 1]);
-
-    // get match next
-    pos = getMatchNext();
-    printf_d("findbest:%d,position:%d\n", pos, M2Idx[pos - 1]);
-    if (pos != 0) {
-      Board[M2Idx[pos - 1]] = 'O';
-      O.push_back(pos);
-    }
-    // printf_d("X win:%d,O win:%d,size:%d",win(X),win(O),X.size()+O.size());
-  } while (!(win(X) || win(O) || finished(X, O)));
-  board();
-  switch (eval(X, O)) {
-    case WIN:
-      return winner = Winner::X;
-    case -WIN:
-      return winner = Winner::O;
-    default:
-      return winner = Winner::Draw;
-  }
-}
 void TicTacToe::clear() {
   memset(Board, ' ', sizeof(Board));
+  lastOppo = -1;
   X.clear();
   O.clear();
   winner = Winner::NotYet;
 }
 TicTacToe::Winner TicTacToe::getLastWinner() const noexcept { return winner; }
-TicTacToe::TicTacToe(Match m, bool console)
-    : matcher(m), winner(Winner::NotYet), ConsoleMode(console) {
+TicTacToe::TicTacToe(Match m)
+    : matcher(m), winner(Winner::NotYet){
   memset(Board, ' ', sizeof(Board));
 }
 TicTacToe::Match TicTacToe::switchMatch(Match m) {
@@ -175,25 +141,26 @@ int TicTacToe::getMatchNext() {
       return 0;
   }
 }
-int TicTacToe::getSelfNext() {
-  int pos;
-  if (ConsoleMode) {
-    bool first = true;
-    do {
-      if (!first) puts("Invalid Move");
-      first = false;
-      std::cout << "[1..9]=> ";
-      std::cin >> pos;
-    } while ((!(pos > 0 && pos < 10)) || In(MAGIC_SQUARE[pos - 1], {X, O}));
-  } else {
-    // polling model
-    // set a flag and check it every TIMER_TIME millisecond
+
+int TicTacToe::getLastOpponentsMove() const noexcept { return lastOppo; }
+
+TicTacToe::Winner TicTacToe::Step(int position,bool start) {
+  if (start) { clear(); }
+  Winner w = eval();
+  if (w != Winner::NotYet) {
+    return w;
   }
-  return pos;
+  if ((!(position > 0 && position < 10)) ||
+      In(MAGIC_SQUARE[position - 1], {X, O})) {
+    throw std::runtime_error("invalid move");
+  } else {
+    Board[position - 1] = 'X';
+    X.push_back(MAGIC_SQUARE[position - 1]);
+    int oppo = getMatchNext();
+    if (oppo != 0) {
+      lastOppo = oppo;
+      Board[M2Idx[oppo - 1]] = 'O';
+      O.push_back(oppo);
+    }
+  }return eval();
 }
-TicTacToe::Winner TicTacToe::Step(bool first) {
-  if (first) clear();
-  // board();
-  return Winner::NotYet;
-}
-TicTacToe::Winner TicTacToe::Step(int position) { return Winner::NotYet; }
