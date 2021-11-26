@@ -143,11 +143,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="T3Component.cpp" />
     <ClCompile Include="TicTacToe.cpp" />
+    <ClCompile Include="TicTacToeBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConsoleTicTacToe.h" />
     <ClInclude Include="T3module.h" />
     <ClInclude Include="TicTacToe.h" />
+    <ClInclude Include="TicTacToeBase.h" />
     <ClInclude Include="Tools.hpp" />
   </ItemGroup>
   <ItemGroup>

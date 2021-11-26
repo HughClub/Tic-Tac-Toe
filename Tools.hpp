@@ -2,6 +2,7 @@
 #ifndef _TOOLS_
 #define _TOOLS_ 1
 #include <vector>
+
 #pragma region In
 template <typename T>
 using VecOne = std::vector<T, std::allocator<T>>;
@@ -24,7 +25,7 @@ static bool In(int e, VecOne<int> const& container) {
   return false;
 }
 
-static bool In(int e, std::initializer_list<VecOne<int>> containers) {
+static bool In(int e, std::initializer_list<VecOne<int>const&> containers) {
   return foldl(containers.begin(), containers.end(), false,
                [=](bool lhs, VecOne<int> const& rhs) -> bool {
                  return lhs || In(e, rhs);
@@ -33,7 +34,7 @@ static bool In(int e, std::initializer_list<VecOne<int>> containers) {
 static bool NotIn(int e, VecOne<int> const& container) {
   return !In(e, container);
 }
-static bool NotIn(int e, std::initializer_list<VecOne<int>> containers) {
+static bool NotIn(int e, std::initializer_list<VecOne<int>const&> containers) {
   return !In(e, containers);
 }
 #pragma endregion

@@ -1,4 +1,4 @@
-//#define debug 1
+﻿//#define debug 1
 #pragma once
 #include "TicTacToe.h"
 #include "Tools.hpp"
@@ -77,7 +77,7 @@ int TicTacToe::minmax(vec x, vec o, int depth, bool maximize) {
   }
   int best = maximize ? -INF : INF;
   for (int i : MAGIC_SQUARE) {
-    if (NotIn(i, {x, o})) {
+    if (NotIn(i, x) && NotIn(i, o)) {
       if (maximize) {
         best = std::max(best, minmax(i + x, o, depth + 1, !maximize));
       } else {
@@ -92,7 +92,7 @@ int TicTacToe::findBest(bool maximize) {
   int best = maximize ? -INF : INF;
   int move = 0, val;
   for (int i : MAGIC_SQUARE) {
-    if (NotIn(i, {X, O})) {
+    if (NotIn(i, X) && NotIn(i, O)) {
       if (maximize) {
         val = minmax(i + X, O, 0, !maximize);
         if (val > best) {
@@ -150,8 +150,9 @@ TicTacToe::Winner TicTacToe::Step(int position,bool start) {
   if (w != Winner::NotYet) {
     return w;
   }
+  int magic=MAGIC_SQUARE[position - 1];
   if ((!(position > 0 && position < 10)) ||
-      In(MAGIC_SQUARE[position - 1], {X, O})) {
+      (In(magic, X)&&In(magic,O))) {
     throw std::runtime_error("invalid move");
   } else {
     Board[position - 1] = 'X';

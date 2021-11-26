@@ -1,18 +1,23 @@
+#ifndef T3Base
+#define T3Base
+constexpr int MAGIC_SQUARE[9] = {4, 9, 2, 3, 5, 7, 8, 1, 6};
+constexpr int M2Idx[9] = {7, 2, 3, 0, 4, 8, 5, 6, 1};  // Magic to Index
+#endif                                                 // T3Base
 #pragma once
 #include<vector>
-
-class ConsoleTicTacToe {
+using vec = std::vector<int>;
+class TicTacToeBase {
  public:
   enum class Winner : int { X, O, Draw, NotYet };
+  enum class Match : bool { Computer, Network };
   const static int INF = 1000;
   const static int WIN = 10;
-  using vec = std::vector<int>;
-  Winner play();
   bool finished(vec const &, vec const &);
   /**
-   * @brief ∆¿π¿µ±«∞æ÷ ∆
+   * @brief ËØÑ‰º∞ÂΩìÂâçÂ±ÄÂäø
    */
   int eval(vec &, vec &);
+  Winner eval();
   /**
    * @brief find best position for next
    */
@@ -20,16 +25,15 @@ class ConsoleTicTacToe {
   /**
    * @brief show current board
    */
-  void board();
+  virtual const vec& board();
   Winner getLastWinner() const noexcept;
-
 
  private:
   constexpr static int PollingGapMS = 10;
-  vec X, O;  // store magic numbers
-  int Board[9];
+  vec X, O, Board;  // store magic numbers
   Winner winner;
-  bool win(vec &);
+  Match matcher;
+  bool win(vec &)noexcept;
   /**
    * @brief calc the score of currnt step
    * @param depth the depth of current level
@@ -38,6 +42,6 @@ class ConsoleTicTacToe {
    */
   int minmax(vec x, vec o, int depth, bool maximize);
   void clear();
-  int getMatchNext();
-  int getSelfNext();
+  virtual int getMatchNext()=0;
+  virtual int getSelfNext()=0;
 };

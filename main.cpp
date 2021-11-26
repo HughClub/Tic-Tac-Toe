@@ -55,8 +55,8 @@ void UI() {
   closegraph();
 }
 int main() {
-  test();
-  //UI();
+  //test();
+  UI();
   return 0;
 }
 void PutAlphaImage(int img_x, int img_y, IMAGE* pSrcImg) {
