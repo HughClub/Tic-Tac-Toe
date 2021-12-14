@@ -5,9 +5,14 @@ constexpr int M2Idx[9] = {7, 2, 3, 0, 4, 8, 5, 6, 1};  // Magic to Index
 #endif                                                 // T3Base
 #pragma once
 #include<vector>
+
 using vec = std::vector<int>;
 class TicTacToeBase {
  public:
+  TicTacToeBase() : Board(9,' '),winner(Winner::NotYet), matcher(Match::Computer) {
+    X.reserve(9);
+    O.reserve(9);
+  }
   enum class Winner : int { X, O, Draw, NotYet };
   enum class Match : bool { Computer, Network };
   const static int INF = 1000;
@@ -20,6 +25,10 @@ class TicTacToeBase {
   Winner eval();
   /**
    * @brief find best position for next
+   * @param maximize 
+		 true for X
+		false for O
+   * @return position : [1,9]
    */
   int findBest(bool maximize);
   /**
@@ -27,8 +36,10 @@ class TicTacToeBase {
    */
   virtual const vec& board();
   Winner getLastWinner() const noexcept;
+  virtual int getMatchNext()=0;
+  virtual int getSelfNext()=0;
 
- private:
+ protected:
   constexpr static int PollingGapMS = 10;
   vec X, O, Board;  // store magic numbers
   Winner winner;
@@ -42,6 +53,4 @@ class TicTacToeBase {
    */
   int minmax(vec x, vec o, int depth, bool maximize);
   void clear();
-  virtual int getMatchNext()=0;
-  virtual int getSelfNext()=0;
 };

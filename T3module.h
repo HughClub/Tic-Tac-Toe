@@ -1,7 +1,6 @@
 #pragma once
 #ifndef __TIC_TAC_TOE_MODULE__
 #define __TIC_TAC_TOE_MODULE__ 1
-namespace Game {
 /**
  * @brief Draw Cross Line;
  * Two lines span half of the Y-axis angle
@@ -10,7 +9,8 @@ namespace Game {
  * @param y : the cross center Y value
  * @param len : the length of each line
  */
-void cross(int x, int y, double len);
+void DrawCross(int x, int y, double len = getheight()/4);
+void DrawCircle(int x, int y, double len = getheight() / 6);
 struct Rect;
 struct Point {
   int x, y;
@@ -20,8 +20,11 @@ struct Point {
 struct Rect {
   Point origin;
   int width, height;
-  Rect(int x, int y, int wid, int heig);
+  Rect(int x, int y, int wid, int h);
   int block(Point const& p, int wb, int hb);
+  Point RegionCenterPoint()const noexcept;
+  Rect const& getRegion(int num,int hdiv=3, int vdiv=3) const noexcept;
+  static Point RegionCenterPoint(Rect const&) noexcept;
 };
 struct Square : Rect {
   Square(int x, int y, int width);
@@ -29,5 +32,4 @@ struct Square : Rect {
 };
 int inTicTacToeRegion(Point cursor, Rect T3, int xblock, int yblock);
 int inTicTacToeRegion(Point cursor, Rect T3, int blocks);
-}  // namespace Game
 #endif  //__TIC_TAC_TOE_MODULE__

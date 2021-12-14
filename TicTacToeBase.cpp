@@ -24,7 +24,7 @@ TicTacToeBase::Winner TicTacToeBase::eval() {
         case -WIN:
             return winner = Winner::O;
         default:
-            return winner = Winner::Draw;
+            return winner = finished(X,O)?Winner::Draw:Winner::NotYet;
     }
 }
 int TicTacToeBase::findBest(bool maximize) {
@@ -101,4 +101,9 @@ int TicTacToeBase::minmax(vec x, vec o, int depth, bool maximize) {
   }
   return best;
 }
-void TicTacToeBase::clear() {Board.clear();}
+void TicTacToeBase::clear() {
+  Board.clear();
+  X.clear();
+  O.clear();
+  winner = Winner::NotYet;
+}

@@ -25,7 +25,7 @@ static bool In(int e, VecOne<int> const& container) {
   return false;
 }
 
-static bool In(int e, std::initializer_list<VecOne<int>const&> containers) {
+static bool In(int e, std::initializer_list<VecOne<int>> containers) {
   return foldl(containers.begin(), containers.end(), false,
                [=](bool lhs, VecOne<int> const& rhs) -> bool {
                  return lhs || In(e, rhs);
@@ -34,7 +34,7 @@ static bool In(int e, std::initializer_list<VecOne<int>const&> containers) {
 static bool NotIn(int e, VecOne<int> const& container) {
   return !In(e, container);
 }
-static bool NotIn(int e, std::initializer_list<VecOne<int>const&> containers) {
+static bool NotIn(int e, std::initializer_list<VecOne<int>> containers) {
   return !In(e, containers);
 }
 #pragma endregion

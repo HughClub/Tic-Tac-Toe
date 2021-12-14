@@ -7,56 +7,44 @@
 #include "TicTacToe.h"
 #include "ConsoleTicTacToe.h"
 void PutAlphaImage(int img_x, int img_y, IMAGE* pSrcImg);
-void test() {
+void Console() {
   ConsoleTicTacToe CT;
   CT.play();
 }
 void UI() {
-  initgraph(261, 261);
-  IMAGE bg,ImgX,ImgO;
-  loadimage(&bg, _T("res/BoardBg.png"));
-  putimage(0, 0, &bg);
-  loadimage(&ImgX, _T("res/X.png"));
-  loadimage(&ImgO, _T("res/O.png"));
+  initgraph(480, 480);
   TicTacToe T3;
-  bool NotEnd = true, start = true;
-  ExMessage m;  // 定义消息变量
-  setlinecolor(BLACK);
-  Game::Rect rect{0, 0, 261, 261};
-  int pos;  // the area you click
-  int Xblk = 3, Yblk = 3;
-  int Xdelta = getwidth() / Xblk, Ydelta = getheight() / Yblk;
-  while (NotEnd) {
-    // 获取一条鼠标或按键消息
-    m = getmessage(EM_MOUSE | EM_KEY);
-
-    switch (m.message) {
-      case WM_LBUTTONDOWN:
-        // printf("(%d,%d) in %d\n", m.x, m.y, rect.block({m.x, m.y}, 3, 3));
-        // outtextxy(15, 15, _T('0' + rect.block({m.x, m.y}, 3, 3)));
-        pos = rect.block({m.x, m.y}, 3, 3);
-        try {
-            NotEnd = T3.Step(pos, start) == TicTacToe::Winner::NotYet;
-            PutAlphaImage(pos%3*Xdelta,pos/3*Ydelta,&ImgX);
-            pos=T3.findBest(false);
-            PutAlphaImage(pos % 3 * Xdelta, pos / 3 * Ydelta, &ImgO);
-            start = false;
-        } catch (std::runtime_error const&) {
-            // 音效
-        }
-        // Game::cross(m.x, m.y, );
-        // circle();
-        break;
-
-      case WM_KEYDOWN:
-        if (m.vkcode == VK_ESCAPE) return ;  // 按 ESC 键退出程序
-    }
+  T3.play();
+  switch (T3.getLastWinner()) {
+    case TicTacToeBase::Winner::Draw:
+      puts("draw");
+      break;
+    case TicTacToeBase::Winner::X:
+      puts("X");
+      break;
+    case TicTacToeBase::Winner::O:
+      puts("O");
+      break;
   }
   closegraph();
 }
+void UI_test() {
+  initgraph(480, 480);
+  Rect i0(0, 0, getwidth(), getheight());
+  for (int i = 0; i < 9; ++i) {
+    i0 = Rect(0, 0, getwidth(), getheight()).getRegion(i);
+    Point p = i0.RegionCenterPoint();
+    printf("region:%d,x:%d,y:%d\n",i,p.x,p.y);
+  }
+  closegraph();
+}
+
 int main() {
   //test();
+  //std::vector<int> vi(9, ' ');
+  //std::cout << vi.size() << std::endl;
   UI();
+  //UI_test();
   return 0;
 }
 void PutAlphaImage(int img_x, int img_y, IMAGE* pSrcImg) {
