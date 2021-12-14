@@ -25,7 +25,7 @@ int printf_d(const char* fmt, ...) {
 #endif
 }
 
-[[DEPRECATED]] TicTacToe::Match TicTacToe::switchMatch(Match m) {
+TicTacToe::Match TicTacToe::switchMatch(Match m) {
   Match prev = matcher;
   matcher = m;
   return prev;
@@ -110,14 +110,14 @@ TicTacToe::Winner TicTacToe::play() {
     DrawCross(center.x,center.y);
     // get match next
     pos = getMatchNext(); // magic number in [1,9]
-    int midx = M2Idx[pos - 1];
     if (pos != 0) {
+      int midx = M2Idx[pos - 1];
       lastOppo = midx;
       Board[midx] = 'O';
       O.push_back(pos); // directly store the value
+      center = screen.getRegion(midx).RegionCenterPoint();
+      DrawCircle(center.x, center.y);
     }
-    center = screen.getRegion(midx).RegionCenterPoint();
-    DrawCircle(center.x, center.y);
   } while (!(win(X) || win(O) || finished(X, O)));
   switch (eval(X, O)) {
     case WIN:

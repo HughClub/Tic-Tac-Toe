@@ -5,11 +5,11 @@ class TicTacToe:public TicTacToeBase {
  public:
   int getLastOpponentsMove() const noexcept;
   TicTacToe();
-  Match switchMatch(Match m);
+  [[DEPRECATED]] Match switchMatch(Match m);
   /**
    * @brief assume input in [1,9]
   */
-  [[DEPRECATED]]Winner Step(int,bool start=false);
+  [[DEPRECATED]] Winner Step(int,bool start=false);
   int getMatchNext();
   /**
    *  @return  position in range[1,9]
