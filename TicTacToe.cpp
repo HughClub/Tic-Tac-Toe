@@ -109,9 +109,11 @@ TicTacToe::Winner TicTacToe::play() {
     Point center = screen.getRegion(pos-1).RegionCenterPoint();
     DrawCross(center.x,center.y);
     // get match next
+    printf("X:%d ",pos);
     pos = getMatchNext(); // magic number in [1,9]
     if (pos != 0) {
       int midx = M2Idx[pos - 1];
+      printf("O:%d\n", midx);
       lastOppo = midx;
       Board[midx] = 'O';
       O.push_back(pos); // directly store the value

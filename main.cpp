@@ -11,7 +11,7 @@ void Console() {
   CT.play();
 }
 void UI() {
-  initgraph(480, 480);
+  initgraph(480, 480,EW_SHOWCONSOLE);
   TicTacToe T3;
   T3.play();
   switch (T3.getLastWinner()) {
